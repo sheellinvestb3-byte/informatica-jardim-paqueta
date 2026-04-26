@@ -1,0 +1,18 @@
+{
+  "name": "Informática Jardim Paquetá",
+  "short_name": "Info Paquetá",
+  "description": "Manutenção de computadores, notebooks, formatação Windows e aluguel de equipamentos para eventos em Planaltina GO.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020b18",
+  "theme_color": "#020b18",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

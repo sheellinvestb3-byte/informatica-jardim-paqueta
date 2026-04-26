@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#020b18">
+  <meta name="description" content="Informática Jardim Paquetá. Manutenção de computadores, notebooks, formatação Windows e aluguel de equipamentos para eventos em Planaltina GO.">
+  <title>Informática Jardim Paquetá</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:   #071e38;
+      --bg2:  #0a2444;
+      --card: #0e2d50;
+      --card2:#123460;
+      --blue: #1a8cff;
+      --blue2:#2998ff;
+      --cyan: #00d4ff;
+      --white:#ffffff;
+      --gray: #b0c8e0;
+      --border: rgba(26,140,255,.28);
+      --border2:rgba(26,140,255,.6);
+      --glow:  rgba(26,140,255,.12);
+      --wa:   #25d366;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(7,30,56,.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,.6); }
+
+    .nav-logo { font-size: 1rem; font-weight: 800; letter-spacing: -.02em; }
+    .nav-logo em { font-style: normal; color: var(--blue); }
+
+    .nav-actions { display: flex; gap: .625rem; align-items: center; }
+
+    .btn-nav {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .45rem 1.1rem; border-radius: 100px;
+      font-weight: 700; font-size: .82rem;
+      transition: all .3s ease; white-space: nowrap;
+    }
+    .btn-nav svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .btn-nav-wa  { background: var(--wa); color: #fff; box-shadow: 0 0 18px rgba(37,211,102,.35); }
+    .btn-nav-wa:hover  { transform: translateY(-2px); box-shadow: 0 0 28px rgba(37,211,102,.6); }
+    .btn-nav-ig  { background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045); color:#fff; box-shadow:0 0 18px rgba(253,29,29,.25); }
+    .btn-nav-ig:hover  { transform: translateY(-2px); box-shadow: 0 0 28px rgba(253,29,29,.45); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 9rem 2rem 5rem;
+      position: relative; overflow: hidden; text-align: center;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(26,140,255,.15) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 85% 85%, rgba(0,212,255,.07) 0%, transparent 60%);
+      animation: heroPulse 8s ease-in-out infinite;
+    }
+    @keyframes heroPulse { 0%,100%{opacity:1} 50%{opacity:.65} }
+
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(26,140,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,140,255,.04) 1px, transparent 1px);
+      background-size: 64px 64px; pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 860px; width: 100%; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(26,140,255,.1); border: 1px solid var(--border);
+      color: var(--cyan); padding: .35rem 1.1rem; border-radius: 100px;
+      font-size: .78rem; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; margin-bottom: 1.75rem;
+    }
+    .hero-badge svg { width: 14px; height: 14px; }
+
+    .hero-title {
+      font-size: clamp(2.6rem,8vw,5.2rem); font-weight: 900;
+      line-height: 1; letter-spacing: -.03em; margin-bottom: 1.25rem;
+    }
+    .ht-blue {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; display: block;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1rem,2.5vw,1.2rem); color: var(--gray);
+      max-width: 580px; margin: 0 auto 2.5rem; line-height: 1.75;
+    }
+
+    /* ── TERMINAL ── */
+    .terminal-wrap { max-width: 700px; margin: 0 auto 2.75rem; perspective: 1200px; }
+
+    .terminal {
+      background: #030810;
+      border: 1px solid rgba(26,140,255,.5); border-radius: 14px; overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(26,140,255,.08),
+        0 25px 70px rgba(0,0,0,.9),
+        0 0 70px rgba(26,140,255,.1),
+        inset 0 1px 0 rgba(255,255,255,.04);
+      transform: rotateX(3deg);
+      transition: transform .4s ease, box-shadow .4s ease;
+    }
+    .terminal:hover {
+      transform: rotateX(0deg);
+      box-shadow:
+        0 0 0 1px rgba(26,140,255,.18),
+        0 30px 80px rgba(0,0,0,.95),
+        0 0 90px rgba(26,140,255,.18),
+        inset 0 1px 0 rgba(255,255,255,.04);
+    }
+
+    .term-header {
+      background: #060f1c;
+      padding: .7rem 1.1rem;
+      display: flex; align-items: center;
+      border-bottom: 1px solid rgba(26,140,255,.18);
+    }
+    .tdots { display: flex; gap: 7px; flex-shrink: 0; }
+    .tdot  { width: 13px; height: 13px; border-radius: 50%; }
+    .tdot.r { background:#ff5f57; box-shadow:0 0 6px rgba(255,95,87,.5); }
+    .tdot.y { background:#ffbd2e; box-shadow:0 0 6px rgba(255,189,46,.5); }
+    .tdot.g { background:#28ca41; box-shadow:0 0 6px rgba(40,202,65,.5); }
+    .term-title-bar {
+      flex:1; text-align:center;
+      font-family:'JetBrains Mono',monospace; font-size:.72rem;
+      color:#4a7090; letter-spacing:.04em;
+    }
+
+    .term-body { padding: 1.5rem 1.75rem 1.75rem; min-height: 90px; }
+    .term-prompt {
+      font-family:'JetBrains Mono',monospace; font-size:.75rem;
+      color:#4a7090; margin-bottom:.6rem;
+    }
+    .term-prompt span { color:#6a9abf; }
+    .term-output {
+      font-family:'JetBrains Mono',monospace;
+      font-size:clamp(.9rem,2.5vw,1.05rem);
+      min-height:1.6em; display:flex; align-items:center; gap:2px;
+    }
+    #ttext { transition: color .4s ease, text-shadow .4s ease; word-break:break-word; }
+    .tcursor {
+      display:inline-block; width:2px; height:1.1em;
+      background:currentColor; margin-left:1px;
+      vertical-align:middle; animation:tblink 1s step-end infinite; flex-shrink:0;
+    }
+    @keyframes tblink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── HERO CTAs ── */
+    .hero-ctas { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+
+    .btn-blue {
+      display:inline-flex; align-items:center; gap:.5rem;
+      background:var(--blue); color:#fff;
+      padding:.9rem 2.2rem; border-radius:10px;
+      font-weight:700; font-size:1rem;
+      border:1px solid rgba(26,140,255,.4);
+      box-shadow:0 0 30px rgba(26,140,255,.4);
+      transition:all .3s ease;
+    }
+    .btn-blue:hover { transform:translateY(-3px); background:var(--blue2); box-shadow:0 0 50px rgba(26,140,255,.6); }
+    .btn-blue svg { width:20px; height:20px; flex-shrink:0; }
+
+    .btn-ghost {
+      display:inline-flex; align-items:center; gap:.5rem;
+      background:rgba(37,211,102,.09); color:var(--wa);
+      padding:.9rem 2.2rem; border-radius:10px;
+      font-weight:700; font-size:1rem;
+      border:1px solid rgba(37,211,102,.3);
+      transition:all .3s ease;
+    }
+    .btn-ghost:hover { transform:translateY(-3px); background:rgba(37,211,102,.18); border-color:rgba(37,211,102,.6); box-shadow:0 0 30px rgba(37,211,102,.2); }
+    .btn-ghost svg { width:20px; height:20px; flex-shrink:0; }
+
+    /* ── HIGHLIGHTS STRIP ── */
+    .hl-strip {
+      display:flex; justify-content:center; align-items:center;
+      flex-wrap:wrap; gap:0;
+      padding:1.75rem 2rem;
+      background:#091e38;
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+    }
+    .hl-item {
+      display:flex; flex-direction:column; align-items:center;
+      padding:0 3rem;
+      border-right:1px solid var(--border);
+    }
+    .hl-item:last-child { border-right:none; }
+    .hl-num  { font-size:2.2rem; font-weight:900; color:var(--blue); letter-spacing:-.04em; line-height:1; }
+    .hl-label{ font-size:.82rem; color:var(--gray); font-weight:500; text-align:center; margin-top:.25rem; }
+
+    /* ── SECTIONS ── */
+    .section { padding:6rem 2rem; }
+    .section.alt { background:var(--bg2); }
+    .s-inner { max-width:1140px; margin:0 auto; }
+
+    .s-header { text-align:center; margin-bottom:3.5rem; }
+    .s-tag {
+      display:inline-block; font-size:.78rem; font-weight:700;
+      letter-spacing:.15em; text-transform:uppercase;
+      color:var(--cyan); margin-bottom:.75rem;
+    }
+    .s-title {
+      font-size:clamp(1.8rem,4vw,2.75rem); font-weight:900;
+      letter-spacing:-.025em; line-height:1.15;
+    }
+    .s-title em { font-style:normal; color:var(--blue); }
+    .s-sub {
+      color:var(--gray); margin-top:.875rem; font-size:1.05rem;
+      max-width:480px; margin-left:auto; margin-right:auto; line-height:1.7;
+    }
+
+    /* ── CARDS ── */
+    .grid-3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:1.5rem; }
+    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1.5rem; }
+
+    .card {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:18px; padding:2rem;
+      position:relative; overflow:hidden;
+      transition:all .4s ease;
+    }
+    .card-lg { padding:2.5rem; }
+
+    .card::after {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,transparent,var(--blue),var(--cyan),transparent);
+      opacity:0; transition:opacity .4s ease;
+    }
+    .card:hover {
+      transform:translateY(-8px);
+      border-color:var(--border2);
+      background:var(--card2);
+      box-shadow:0 24px 60px rgba(0,0,0,.55), 0 0 40px rgba(26,140,255,.14);
+    }
+    .card:hover::after { opacity:1; }
+
+    .c-icon {
+      width:58px; height:58px;
+      background:rgba(26,140,255,.1); border:1px solid rgba(26,140,255,.2);
+      border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:1.4rem; color:var(--blue);
+      transition:all .4s ease;
+    }
+    .c-icon svg { width:28px; height:28px; }
+    .card:hover .c-icon { background:rgba(26,140,255,.2); color:var(--cyan); box-shadow:0 0 22px rgba(26,140,255,.3); }
+
+    .c-title { font-size:1.2rem; font-weight:800; margin-bottom:.6rem; letter-spacing:-.01em; }
+    .c-desc  { color:var(--gray); font-size:.97rem; line-height:1.7; }
+
+    .c-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.25rem; }
+    .c-tag  {
+      background:rgba(26,140,255,.1); border:1px solid rgba(26,140,255,.2);
+      color:var(--cyan); font-size:.78rem; font-weight:600;
+      padding:.25rem .75rem; border-radius:100px;
+    }
+
+    /* ── STORYTELLING ── */
+    .story-section {
+      padding:7rem 2rem;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(26,140,255,.1) 0%, transparent 70%),
+        var(--bg);
+      border-top:1px solid var(--border);
+      text-align:center; position:relative; overflow:hidden;
+    }
+    .story-section::before {
+      content:''; position:absolute; inset:0;
+      background-image:
+        linear-gradient(rgba(26,140,255,.03) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(26,140,255,.03) 1px,transparent 1px);
+      background-size:64px 64px; pointer-events:none;
+    }
+    .story-inner { position:relative; z-index:1; max-width:800px; margin:0 auto; }
+
+    .story-headline {
+      font-size:clamp(2rem,5vw,3.5rem); font-weight:900;
+      letter-spacing:-.03em; line-height:1.1;
+      margin:1rem 0 2rem;
+    }
+    .story-headline span {
+      background:linear-gradient(135deg,var(--blue),var(--cyan));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    .story-blocks {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:1.5rem; margin:2.5rem 0; text-align:left;
+    }
+    .sb {
+      background:rgba(26,140,255,.06); border:1px solid var(--border);
+      border-radius:14px; padding:1.5rem;
+      transition:all .4s ease;
+    }
+    .sb:hover { border-color:var(--border2); background:rgba(26,140,255,.1); }
+    .sb-num  { font-size:2.2rem; font-weight:900; color:var(--blue); letter-spacing:-.04em; line-height:1; margin-bottom:.5rem; }
+    .sb-label{ font-size:1rem; font-weight:700; color:var(--white); margin-bottom:.3rem; }
+    .sb-text { font-size:.93rem; color:var(--gray); line-height:1.65; }
+
+    .story-body {
+      font-size:1.1rem; color:var(--gray); line-height:1.8;
+      margin-bottom:2.5rem; max-width:640px; margin-left:auto; margin-right:auto;
+    }
+    .story-body strong { color:var(--white); }
+
+    /* ── FAQ ── */
+    .faq-section { padding:6rem 2rem; background:var(--bg2); border-top:1px solid var(--border); }
+    .faq-inner   { max-width:760px; margin:0 auto; }
+    .faq-list    { display:flex; flex-direction:column; gap:.875rem; margin-top:1rem; }
+
+    .faq-item {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:14px; overflow:hidden;
+      transition:border-color .3s ease;
+    }
+    .faq-item.open { border-color:var(--border2); }
+
+    .faq-q {
+      display:flex; align-items:center; justify-content:space-between; gap:1rem;
+      padding:1.4rem 1.75rem; cursor:pointer;
+      font-weight:700; font-size:1rem; color:var(--white);
+      transition:color .3s ease; user-select:none;
+    }
+    .faq-q:hover { color:var(--cyan); }
+    .faq-item.open .faq-q { color:var(--blue); }
+
+    .faq-arr {
+      width:24px; height:24px; border:1px solid var(--border); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0; transition:all .35s ease; color:var(--blue);
+    }
+    .faq-arr svg { width:12px; height:12px; transition:transform .35s ease; }
+    .faq-item.open .faq-arr { background:rgba(26,140,255,.15); border-color:var(--blue); }
+    .faq-item.open .faq-arr svg { transform:rotate(180deg); }
+
+    .faq-a {
+      max-height:0; overflow:hidden;
+      transition:max-height .4s ease, padding .3s ease;
+      padding:0 1.75rem;
+    }
+    .faq-item.open .faq-a { max-height:500px; padding:0 1.75rem 1.5rem; }
+    .faq-a p {
+      color:var(--gray); font-size:.97rem; line-height:1.75;
+      border-top:1px solid var(--border); padding-top:1.25rem;
+    }
+
+    /* ── CONTACT ── */
+    .contact-section { padding:6rem 2rem; background:var(--bg); border-top:1px solid var(--border); }
+    .contact-inner   { max-width:700px; margin:0 auto; text-align:center; }
+
+    .contact-addr {
+      display:inline-flex; align-items:center; gap:.6rem;
+      color:var(--gray); font-size:1rem; margin-bottom:2.5rem;
+      background:rgba(26,140,255,.07); border:1px solid var(--border);
+      padding:.7rem 1.5rem; border-radius:100px;
+    }
+    .contact-addr svg { color:var(--blue); flex-shrink:0; width:18px; height:18px; }
+
+    .contact-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+
+    .btn-cwa {
+      display:flex; align-items:center; gap:.75rem;
+      background:rgba(37,211,102,.1); border:1px solid rgba(37,211,102,.3);
+      color:#2ddc6e; padding:1.1rem 2.25rem; border-radius:14px;
+      font-weight:800; font-size:1.05rem; transition:all .3s ease;
+    }
+    .btn-cwa:hover { background:rgba(37,211,102,.18); border-color:rgba(37,211,102,.65); transform:translateY(-4px); box-shadow:0 12px 35px rgba(37,211,102,.2); }
+
+    .btn-cig {
+      display:flex; align-items:center; gap:.75rem;
+      background:rgba(225,48,108,.1); border:1px solid rgba(225,48,108,.3);
+      color:#e84c7a; padding:1.1rem 2.25rem; border-radius:14px;
+      font-weight:800; font-size:1.05rem; transition:all .3s ease;
+    }
+    .btn-cig:hover { background:rgba(225,48,108,.18); border-color:rgba(225,48,108,.65); transform:translateY(-4px); box-shadow:0 12px 35px rgba(225,48,108,.2); }
+    .btn-cwa svg, .btn-cig svg { width:22px; height:22px; flex-shrink:0; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding:2.75rem 2rem; text-align:center;
+      background:#061628; border-top:1px solid var(--border);
+    }
+    .footer-name { font-size:1.3rem; font-weight:900; letter-spacing:-.02em; margin-bottom:.4rem; }
+    .footer-name em { font-style:normal; color:var(--blue); }
+    .footer-copy { color:#5a7898; font-size:.85rem; }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .fu { opacity:0; transform:translateY(36px); transition:opacity .7s ease,transform .7s ease; }
+    .fu.in { opacity:1; transform:translateY(0); }
+    .fu-d1 { transition-delay:.08s; }
+    .fu-d2 { transition-delay:.16s; }
+    .fu-d3 { transition-delay:.24s; }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px){
+      nav { padding:.875rem 1.25rem; }
+      .nav-logo { font-size:.85rem; }
+      .btn-nav { padding:.4rem .875rem; font-size:.78rem; }
+      .hero { padding:8rem 1.5rem 4rem; }
+      .hero-ctas { flex-direction:column; align-items:center; }
+      .term-body { padding:1.1rem 1.25rem 1.4rem; }
+      .section { padding:4rem 1.25rem; }
+      .hl-strip { flex-direction:column; }
+      .hl-item { padding:.75rem 1.5rem; border-right:none; border-bottom:1px solid var(--border); }
+      .hl-item:last-child { border-bottom:none; }
+      .grid-2 { grid-template-columns:1fr; }
+      .story-blocks { grid-template-columns:1fr; }
+      .contact-btns { flex-direction:column; align-items:center; }
+      .faq-q { padding:1.1rem 1.25rem; font-size:.95rem; }
+      .faq-item.open .faq-a { padding:0 1.25rem 1.25rem; }
+    }
+    @media(max-width:480px){
+      .hero-title { letter-spacing:-.02em; }
+      .story-headline { font-size:1.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav id="nav">
+  <span class="nav-logo">Informática <em>Jardim Paquetá</em></span>
+  <div class="nav-actions">
+    <a href="https://wa.me/5561991958271" target="_blank" rel="noopener" class="btn-nav btn-nav-wa">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+    <a href="https://www.instagram.com/informaticapaqueta?igsh=MW5ua2xwbXB2czc3eQ==" target="_blank" rel="noopener" class="btn-nav btn-nav-ig">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      Instagram
+    </a>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <span class="hero-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Jardim Paquetá, Planaltina GO
+    </span>
+    <h1 class="hero-title">
+      INFORMÁTICA
+      <span class="ht-blue">JARDIM PAQUETÁ</span>
+    </h1>
+    <p class="hero-tagline">Manutenção, formatação e soluções em informática. Aluguel de equipamentos e espaço para seus eventos em Planaltina GO.</p>
+
+    <div class="terminal-wrap">
+      <div class="terminal">
+        <div class="term-header">
+          <div class="tdots">
+            <span class="tdot r"></span>
+            <span class="tdot y"></span>
+            <span class="tdot g"></span>
+          </div>
+          <span class="term-title-bar">terminal — Informática Jardim Paquetá</span>
+          <div style="width:54px"></div>
+        </div>
+        <div class="term-body">
+          <div class="term-prompt">C:\InformaticaPaqueta<span>&gt;</span> iniciar_servicos.exe</div>
+          <div class="term-output">
+            <span id="ttext"></span>
+            <span class="tcursor"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="#servicos" class="btn-blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        Ver Serviços
+      </a>
+      <a href="https://wa.me/5561991958271" target="_blank" rel="noopener" class="btn-ghost">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Falar no WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ HIGHLIGHTS ═══════════════ -->
+<div class="hl-strip">
+  <div class="hl-item">
+    <span class="hl-num">8+</span>
+    <span class="hl-label">Anos de Experiência</span>
+  </div>
+  <div class="hl-item">
+    <span class="hl-num">100%</span>
+    <span class="hl-label">Atendimento Local</span>
+  </div>
+  <div class="hl-item">
+    <span class="hl-num">4+</span>
+    <span class="hl-label">Serviços Disponíveis</span>
+  </div>
+</div>
+
+<!-- ═══════════════ INFORMÁTICA ═══════════════ -->
+<section class="section" id="servicos">
+  <div class="s-inner">
+    <div class="s-header fu">
+      <span class="s-tag">Informática</span>
+      <h2 class="s-title">Serviços de <em>Informática</em></h2>
+      <p class="s-sub">Diagnóstico, manutenção e configuração para o seu computador ou notebook com agilidade e qualidade.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card fu fu-d1">
+        <div class="c-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3 class="c-title">Manutenção de Computadores</h3>
+        <p class="c-desc">Diagnóstico completo, limpeza interna, troca de peças e otimização de desempenho para computadores de todos os tipos e marcas.</p>
+        <div class="c-tags">
+          <span class="c-tag">Diagnóstico</span>
+          <span class="c-tag">Limpeza</span>
+          <span class="c-tag">Peças</span>
+        </div>
+      </div>
+      <div class="card fu fu-d2">
+        <div class="c-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+        </div>
+        <h3 class="c-title">Manutenção de Notebooks</h3>
+        <p class="c-desc">Reparo de tela, teclado, bateria e componentes internos. Seu notebook de volta ao funcionamento pleno com rapidez e garantia.</p>
+        <div class="c-tags">
+          <span class="c-tag">Tela</span>
+          <span class="c-tag">Teclado</span>
+          <span class="c-tag">Bateria</span>
+        </div>
+      </div>
+      <div class="card fu fu-d3">
+        <div class="c-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:28px;height:28px"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+        </div>
+        <h3 class="c-title">Formatação e Instalação do Windows</h3>
+        <p class="c-desc">Instalação limpa do sistema operacional Windows com todos os drivers, programas essenciais e configurações prontas para uso.</p>
+        <div class="c-tags">
+          <span class="c-tag">Windows 10</span>
+          <span class="c-tag">Windows 11</span>
+          <span class="c-tag">Drivers</span>
+        </div>
+      </div>
+      <div class="card fu fu-d3">
+        <div class="c-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="20" height="12" rx="6"/><line x1="6" y1="14" x2="10" y2="14"/><line x1="8" y1="12" x2="8" y2="16"/><circle cx="15.5" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="18" cy="14" r="1" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <h3 class="c-title">Montagem e Venda de PC Gamer</h3>
+        <p class="c-desc">Montamos o PC Gamer ideal para o seu orçamento e necessidade. Peças selecionadas, configuração otimizada e suporte completo pós-montagem.</p>
+        <div class="c-tags">
+          <span class="c-tag">Alta Performance</span>
+          <span class="c-tag">Custo Benefício</span>
+          <span class="c-tag">Suporte</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ EVENTOS ═══════════════ -->
+<section class="section alt" id="eventos">
+  <div class="s-inner">
+    <div class="s-header fu">
+      <span class="s-tag">Eventos e Locações</span>
+      <h2 class="s-title">Tudo para o seu <em>Evento</em></h2>
+      <p class="s-sub">Equipamentos profissionais e espaço completo para festas e eventos em Planaltina e região.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card card-lg fu fu-d1">
+        <div class="c-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </div>
+        <h3 class="c-title">Aluguel de Som, Iluminação e Máquina de Fumaça</h3>
+        <p class="c-desc">Equipamentos profissionais de áudio e iluminação para festas infantis e adultos. Do som ao efeito visual, cuidamos de cada detalhe para que seu evento seja inesquecível.</p>
+        <div class="c-tags">
+          <span class="c-tag">Som Profissional</span>
+          <span class="c-tag">Iluminação</span>
+          <span class="c-tag">Máquina de Fumaça</span>
+          <span class="c-tag">Festas Infantis</span>
+          <span class="c-tag">Festas Adultos</span>
+        </div>
+      </div>
+      <div class="card card-lg fu fu-d2">
+        <div class="c-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3 class="c-title">Espaço para Festas e Eventos</h3>
+        <p class="c-desc">Aluguel de espaço completo para realizar seu evento com toda a estrutura necessária. Atendemos festas infantis, adultos e confraternizações em Planaltina GO.</p>
+        <div class="c-tags">
+          <span class="c-tag">Espaço Completo</span>
+          <span class="c-tag">Planaltina GO</span>
+          <span class="c-tag">Festas Infantis</span>
+          <span class="c-tag">Confraternizações</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ STORYTELLING ═══════════════ -->
+<section class="story-section">
+  <div class="story-inner fu">
+    <span class="s-tag">Quem somos</span>
+    <h2 class="story-headline">
+      Quando você precisa de solução,<br>
+      <span>nós entregamos resultado.</span>
+    </h2>
+    <div class="story-blocks">
+      <div class="sb">
+        <div class="sb-num">8+</div>
+        <div class="sb-label">Anos no Mercado</div>
+        <div class="sb-text">Desde 2018 atendemos Planaltina e região com compromisso, honestidade e técnica comprovada.</div>
+      </div>
+      <div class="sb">
+        <div class="sb-num">1</div>
+        <div class="sb-label">Missão Clara</div>
+        <div class="sb-text">Resolver o seu problema com rapidez, transparência e o melhor custo benefício da região.</div>
+      </div>
+    </div>
+    <p class="story-body">
+      Seu computador travando, seu evento se aproximando, sua empresa precisando de suporte.<br>
+      <strong>A Informática Jardim Paquetá está a uma mensagem de distância.</strong>
+    </p>
+    <a href="https://wa.me/5561991958271" target="_blank" rel="noopener" class="btn-blue">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Falar Agora no WhatsApp
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════════ FAQ ═══════════════ -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <div class="s-header fu">
+      <span class="s-tag">Dúvidas Frequentes</span>
+      <h2 class="s-title">Perguntas sobre <em>nossos serviços</em></h2>
+    </div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Quais serviços nós oferecemos?
+          <span class="faq-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a"><p>Oferecemos manutenção e reparo de computadores e notebooks, formatação e instalação do sistema operacional Windows, além de aluguel de equipamentos de som, iluminação e máquina de fumaça para eventos. Também disponibilizamos espaço completo para festas e confraternizações em Planaltina GO.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Qual é o nosso diferencial estratégico?
+          <span class="faq-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a"><p>Somos o único serviço em Planaltina que une informática e eventos em um só lugar. Com mais de 8 anos de atuação local, conhecemos as necessidades da nossa comunidade e entregamos atendimento personalizado, rápido e com preço justo. Você não precisa procurar em outro lugar.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Como podemos melhorar o desempenho do seu computador?
+          <span class="faq-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a"><p>Realizamos um diagnóstico completo para identificar o que está comprometendo o desempenho. Isso inclui limpeza interna, remoção de vírus e malwares, atualização de programas, troca de memória ou disco quando necessário e, se indicado, uma formatação completa com reinstalação do Windows para deixar tudo como novo.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          O que está incluso em nossa formatação com Windows?
+          <span class="faq-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a"><p>Nossa formatação inclui instalação limpa do Windows 10 ou 11, instalação de todos os drivers do equipamento, configuração de rede e internet, instalação dos programas essenciais como navegador, leitor de PDF e pacote de escritório, além de orientação para o bom uso do sistema após a entrega.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Como funciona o nosso aluguel para eventos?
+          <span class="faq-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a"><p>Entre em contato pelo WhatsApp, informe a data e o tipo do evento, e nós apresentamos os pacotes disponíveis de som, iluminação e máquina de fumaça. Trabalhamos com festas infantis e adultos, e também disponibilizamos nosso espaço completo para quem precisa de um local estruturado em Planaltina GO.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Como podemos te atender hoje?
+          <span class="faq-arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="faq-a"><p>Basta nos chamar no WhatsApp. Respondemos com agilidade, avaliamos a sua necessidade e já agendamos o atendimento. Estamos localizados na Quadra 193 Casa 17, Jardim Paquetá em Planaltina GO, e atendemos tanto presencialmente quanto com coleta e entrega quando necessário.</p></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<section class="contact-section" id="contato">
+  <div class="contact-inner">
+    <div class="fu">
+      <span class="s-tag">Contato</span>
+      <h2 class="s-title" style="margin-bottom:1.75rem">Fale <em>Conosco</em></h2>
+    </div>
+    <div class="contact-addr fu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Quadra 193 Casa 17, Jardim Paquetá, Planaltina, Goiás
+    </div>
+    <div class="contact-btns fu">
+      <a href="https://wa.me/5561991958271" target="_blank" rel="noopener" class="btn-cwa">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        (61) 99195-8271
+      </a>
+      <a href="https://www.instagram.com/informaticapaqueta?igsh=MW5ua2xwbXB2czc3eQ==" target="_blank" rel="noopener" class="btn-cig">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        @informaticapaqueta
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <p class="footer-name">Informática <em>Jardim Paquetá</em></p>
+  <p class="footer-copy">© 2026 Informática Jardim Paquetá. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+  // ── TYPEWRITER ──
+  const phrases = [
+    { t: '> Manutenção de Computadores e Notebooks...',       c: '#00ff88' },
+    { t: '> Formatação e Instalação do Windows...',           c: '#1a8cff' },
+    { t: '> Aluguel de Som, Iluminação e Máquina de Fumaça...', c: '#00d4ff' },
+    { t: '> Espaço para Festas e Eventos em Planaltina GO...', c: '#ffaa00' },
+    { t: '> Soluções completas em Informática para você.',    c: '#ffffff' }
+  ];
+
+  let pi = 0, ci = 0, del = false;
+
+  function type() {
+    const el = document.getElementById('ttext');
+    const ph = phrases[pi];
+    el.style.color = ph.c;
+    el.style.textShadow = '0 0 24px ' + ph.c + '55';
+
+    if (!del) {
+      el.textContent = ph.t.substring(0, ci + 1);
+      ci++;
+      if (ci === ph.t.length) { del = true; setTimeout(type, 2700); return; }
+    } else {
+      el.textContent = ph.t.substring(0, ci - 1);
+      ci--;
+      if (ci === 0) { del = false; pi = (pi + 1) % phrases.length; }
+    }
+    setTimeout(type, del ? 22 : 58);
+  }
+
+  // ── SCROLL ANIMATIONS ──
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+
+  // ── NAV SCROLL ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── FAQ ACCORDION ──
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const open = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!open) item.classList.add('open');
+    });
+  });
+
+  // ── PWA SERVICE WORKER ──
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  }
+
+  // ── START ──
+  type();
+</script>
+</body>
+</html>
