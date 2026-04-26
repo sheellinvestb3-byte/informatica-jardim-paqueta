@@ -1,4 +1,4 @@
-const CACHE = 'ijp-v1';
+const CACHE = 'ijp-v2';
 const ASSETS = ['/', '/index.html', '/manifest.json', '/icon.svg'];
 
 self.addEventListener('install', e => {
